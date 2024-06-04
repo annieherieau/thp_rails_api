@@ -1,11 +1,10 @@
 class ArticlesController < ApplicationController
   before_action :set_article, only: %i[ show update destroy ]
-  # before_action :authenticate_user!, except: %i[ index ]
+  before_action :authenticate_user!, except: %i[ index ]
   
   # GET /articles
   def index
     @articles = Article.all
-
     render json: @articles
   end
 
@@ -17,6 +16,7 @@ class ArticlesController < ApplicationController
   # POST /articles
   def create
     @article = Article.new(article_params)
+    @article.user = current_user
 
     if @article.save
       render json: @article, status: :created, location: @article
@@ -27,16 +27,28 @@ class ArticlesController < ApplicationController
 
   # PATCH/PUT /articles/1
   def update
-    if @article.update(article_params)
-      render json: @article
+    # Author only
+    set_article()
+    if @article.user == current_user
+      if @article.update(article_params)
+        render json: @article
+      else
+        render json: @article.errors, status: :unprocessable_entity
+      end
     else
-      render json: @article.errors, status: :unprocessable_entity
+      render json: { message: "Vous n'avez pas les droits pour modifier cet article." }, status: :unauthorized
     end
   end
 
   # DELETE /articles/1
   def destroy
-    @article.destroy!
+    # Author only
+    set_article()
+    if @article.user == current_user
+      @article.destroy!
+    else
+      render json: { message: "Vous n'avez pas les droits pour supprimer cet article." }, status: :unauthorized
+    end
   end
 
   private

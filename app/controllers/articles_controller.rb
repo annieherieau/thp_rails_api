@@ -36,7 +36,7 @@ class ArticlesController < ApplicationController
         render json: @article.errors, status: :unprocessable_entity
       end
     else
-      render json: { message: "Vous n'avez pas les droits pour modifier cet article." }, status: :unauthorized
+      render json: { message: "Vous ne pouvez pas modifier cet article." }, status: :unauthorized
     end
   end
 
@@ -46,8 +46,10 @@ class ArticlesController < ApplicationController
     set_article()
     if @article.user == current_user
       @article.destroy!
+      render json: { message: "Article was successfully destroyed." }, status: :ok
+      
     else
-      render json: { message: "Vous n'avez pas les droits pour supprimer cet article." }, status: :unauthorized
+      render json: { message: "Vous ne pouvez pas supprimer cet article" }, status: :unauthorized
     end
   end
 

@@ -17,9 +17,13 @@ def reset_db()
   Article.destroy_all
   User.destroy_all
   # reset ID 
-  # ActiveRecord::Base.connection.tables.each do |t|
-  #   ActiveRecord::Base.connection.reset_sequence!(t)
-  # end
+  
+  ActiveRecord::Base.connection.tables.each do |t|
+    # postgreSql
+    # ActiveRecord::Base.connection.reset_pk_sequence!(t)
+    # SQLite
+    ActiveRecord::Base.connection.execute("DELETE from sqlite_sequence where name = '#{t}'") 
+  end
 
   puts ('drop and reset all tables')
 end
@@ -40,7 +44,7 @@ def create_articles(number)
     article = Article.create!(
       title: Faker::Hobby.unique.activity,
       content: Faker::Lorem.paragraph(sentence_count: Faker::Number.between(from: 3, to: 7)),
-      user: User.all.sample
+      user_id: User.all.sample.id
     )
   end
   puts("#{number} Artciles créés")

@@ -47,7 +47,7 @@ def create_articles(number)
       user_id: User.all.sample.id
     )
   end
-  puts("#{number} Artciles créés")
+  puts("#{number} Articles créés")
 end
 
 # PERFORM SEEDING

@@ -10,7 +10,11 @@ class ArticlesController < ApplicationController
 
   # GET /articles/1
   def show
-    render json: @article
+    if !@article.private || (@article.private && @article.user == current_user)
+      render json: @article
+    else
+      render json: { message: "Cet article est privé." }, status: :unauthorized
+    end
   end
 
   # POST /articles
@@ -61,6 +65,6 @@ class ArticlesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def article_params
-      params.require(:article).permit(:title, :content)
+      params.require(:article).permit(:title, :content, :private)
     end
 end

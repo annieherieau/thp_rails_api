@@ -5,19 +5,6 @@ require "rails/all"
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
-# DEVISE: Config pour utiliser les cookies 
-module DeviseVue
-  class Application < Rails::Application
-
-    # This also configures session_options for use below
-    config.session_store :cookie_store, key: '_interslice_session'
-
-    # Required for all session management (regardless of session_store)
-    config.middleware.use ActionDispatch::Cookies
-
-    config.middleware.use config.session_store, config.session_options
-  end
-end
 
 module ThpRailsApi
   class Application < Rails::Application
@@ -41,5 +28,13 @@ module ThpRailsApi
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    # Devise session
+    # This also configures session_options for use below
+    config.session_store :cookie_store, key: '_thp_rails_api_session'
+
+    # Required for all session management (regardless of session_store)
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use config.session_store, config.session_options
   end
 end

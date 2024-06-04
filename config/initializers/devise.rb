@@ -12,7 +12,7 @@ Devise.setup do |config|
 
   # devise-jwt configuration
   config.jwt do |jwt|
-    jwt.secret = ENV['DEVISE_JWT_SECRET_KEY']
+    jwt.secret = Rails.application.credentials.devise[:jwt_secret_key]
   end
 
   # The secret key used by Devise. Devise uses this key to generate
@@ -271,7 +271,7 @@ Devise.setup do |config|
   #
   # The "*/*" below is required to match Internet Explorer requests.
   # config.navigational_formats = ['*/*', :html, :turbo_stream]
-
+  config.navigational_formats = []
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete
 

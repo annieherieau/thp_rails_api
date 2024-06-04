@@ -1,10 +1,11 @@
 Rails.application.routes.draw do
+
   resources :articles
   devise_for :users,
-             controllers: {
-               sessions: 'users/sessions',
-               registrations: 'users/registrations'
-             }
+            controllers: {
+              sessions: 'users/sessions',
+              registrations: 'users/registrations'
+            }
   get '/member-data', to: 'members#show'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -13,5 +14,5 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Defines the root path route ("/")
-  # root "posts#index"
+  root "articles#index"
 end

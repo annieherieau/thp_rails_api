@@ -1,0 +1,2 @@
+# pour générer une secret key: rails secret
+'DEVISE_JWT_SECRET_KEY'=''

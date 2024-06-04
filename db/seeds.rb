@@ -7,3 +7,46 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+require 'faker'
+Faker::Config.locale='fr'
+Faker::UniqueGenerator.clear
+
+# Supprimer toutes les données existantes
+def reset_db()
+  Article.destroy_all
+  User.destroy_all
+  # reset ID 
+  # ActiveRecord::Base.connection.tables.each do |t|
+  #   ActiveRecord::Base.connection.reset_sequence!(t)
+  # end
+
+  puts ('drop and reset all tables')
+end
+
+def create_users(number)
+  number.times do |i|
+    user = User.create!(
+      email: Faker::Internet.unique.email,
+      password: "1&Azert"
+    )
+  end
+  puts("#{number} Users créés")
+end
+
+
+def create_articles(number)
+  number.times do |i|
+    article = Article.create!(
+      title: Faker::Hobby.unique.activity,
+      content: Faker::Lorem.paragraph(sentence_count: Faker::Number.between(from: 3, to: 7)),
+      user: User.all.sample
+    )
+  end
+  puts("#{number} Artciles créés")
+end
+
+# PERFORM SEEDING
+reset_db();
+create_users(2);
+create_articles(5)

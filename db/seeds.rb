@@ -52,5 +52,5 @@ end
 
 # PERFORM SEEDING
 reset_db();
-create_users(2);
-create_articles(5)
+create_users(6);
+create_articles(30)
